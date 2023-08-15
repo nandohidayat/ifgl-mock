@@ -118,7 +118,7 @@ const field = (amount) => {
     }
 }
 
-app.post('/api/payment', (req, res) => {
+app.post('/pts/v2/payments', (req, res) => {
     return res.status(200).json(field(req.body.orderInformation.amountDetails.totalAmount))
 })
 
