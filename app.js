@@ -1,109 +1,109 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 31;
 
 app.use(express.json())
 const reason = (amount) => {
     switch (amount) {
-        case 10001:
+        case 101:
             return 'PROCESSOR_TIMEOUT'
-        case 10002:
+        case 102:
             return 'CONSUMER_AUTHENTICATION_FAILED'
-        case 10003:
+        case 103:
             return 'AVS_FAILED'
-        case 10004:
+        case 104:
             return 'CONTACT_PROCESSOR'
-        case 10005:
+        case 105:
             return 'PROCESSOR_DECLINED'
-        case 10006:
+        case 106:
             return 'UNAUTHORIZED_CARD'
-        case 10007:
+        case 107:
             return 'DECLINED_CHECK'
-        case 10008:
+        case 108:
             return 'BLACKLISTED_CUSTOMER'
-        case 10009:
+        case 109:
             return 'SUSPENDED_ACCOUNT'
-        case 10010:
+        case 110:
             return 'INVALID_ACCOUNT'
-        case 10011:
+        case 111:
             return 'GENERAL_DECLINE'
-        case 10012:
+        case 112:
             return 'BOLETO_DECLINED'
-        case 10013:
+        case 113:
             return 'SCORE_EXCEEDS_THRESHOLD'
-        case 10014:
+        case 114:
             return 'PAYMENT_REFUSED'
-        case 10015:
+        case 115:
             return 'PROCESSOR_ERROR'
-        case 10016:
+        case 116:
             return 'EXPIRED_CARD'
-        case 10017:
+        case 117:
             return 'INVALID_MERCHANT_CONFIGURATION'
-        case 10018:
+        case 118:
             return 'CONSUMER_AUTHENTICATION_REQUIRED'
-        case 10019:
+        case 119:
             return 'DECISION_PROFILE_REVIEW'
-        case 10020:
+        case 120:
             return 'DECISION_PROFILE_REJECT'
-        case 10021:
+        case 121:
             return 'CUSTOMER_WATCHLIST_MATCH'
-        case 10022:
+        case 122:
             return 'ADDRESS_COUNTRY_WATCHLIST_MATCH'
-        case 10023:
+        case 123:
             return 'EMAIL_COUNTRY_WATCHLIST_MATCH'
-        case 10024:
+        case 124:
             return 'IP_COUNTRY_WATCHLIST_MATCH'
-        case 10025:
+        case 125:
             return 'ACH_VERIFICATION_FAILED'
-        case 10026:
+        case 126:
             return 'ALLOWABLE_PIN_RETRIES_EXCEEDED'
-        case 10027:
+        case 127:
             return 'PENDING_AUTHENTICATION'
-        case 10028:
+        case 128:
             return 'INSUFFICIENT_FUND'
-        case 10029:
+        case 129:
             return 'CVN_NOT_MATCH'
-        case 10030:
+        case 130:
             return 'INVALID_CVN'
-        case 10031:
+        case 131:
             return 'CV_FAILED'
-        case 10032:
+        case 132:
             return 'EXCEEDS_CREDIT_LIMIT'
-        case 10033:
+        case 133:
             return 'DEBIT_CARD_USAGE_LIMIT_EXCEEDED'
-        case 10034:
+        case 134:
             return 'ISSUER_UNAVAILABLE'
-        case 10035:
+        case 135:
             return 'STOLEN_LOST_CARD'
-        case 20001:
+        case 201:
             return 'DUPLICATE_REQUEST'
-        case 20002:
+        case 202:
             return 'SYSTEM_ERROR'
-        case 20003:
+        case 203:
             return 'SERVER_TIMEOUT'
-        case 20004:
+        case 204:
             return 'SERVICE_TIMEOUT'
-        case 20005:
+        case 205:
             return 'MISSING_FIELD'
-        case 20006:
+        case 206:
             return 'INVALID_DATA'
-        case 20007:
+        case 207:
             return 'CARD_TYPE_NOT_ACCEPTED'
-        case 20008:
+        case 208:
             return 'INVALID_MERCHANT_CONFIGURATION'
-        case 20009:
+        case 209:
             return 'INVALID_AMOUNT'
-        case 20010:
+        case 210:
             return 'INVALID_CARD_TYPE'
-        case 20011:
+        case 211:
             return 'INVALID_PAYMENT_ID'
-        case 20012:
+        case 212:
             return 'INVALID_CARD'
-        case 20013:
+        case 213:
             return 'INVALID_OR_MISSING_CONFIG'
-        case 20014:
+        case 214:
             return 'NOT_SUPPORTED'
-        case 20015:
+        case 215:
             return 'PROCESSOR_UNAVAILABLE'
         default:
             return 'UNKNOWN'
@@ -111,7 +111,7 @@ const reason = (amount) => {
 }
 
 const field = (amount) => {
-    if (amount <= 20000) {
+    if (amount <= 200) {
         return {errorInformation: {reason: reason(amount)}}
     } else {
         return {reason: reason(amount)}
@@ -119,10 +119,10 @@ const field = (amount) => {
 }
 
 app.post('/pts/v2/payments', (req, res) => {
-    return res.status(200).json(field(req.body.orderInformation.amountDetails.totalAmount))
+    return res.status(2).json(field(req.body.orderInformation.amountDetails.totalAmount))
 })
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
+server.keepAliveTimeout = 120 * 10;
+server.headersTimeout = 120 * 10;
