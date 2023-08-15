@@ -2,60 +2,127 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.get("/", (req, res) => res.type('html').send(html));
+app.use(express.json())
+const reason = (amount) => {
+    switch (amount) {
+        case 10001:
+            return 'PROCESSOR_TIMEOUT'
+        case 10002:
+            return 'CONSUMER_AUTHENTICATION_FAILED'
+        case 10003:
+            return 'AVS_FAILED'
+        case 10004:
+            return 'CONTACT_PROCESSOR'
+        case 10005:
+            return 'PROCESSOR_DECLINED'
+        case 10006:
+            return 'UNAUTHORIZED_CARD'
+        case 10007:
+            return 'DECLINED_CHECK'
+        case 10008:
+            return 'BLACKLISTED_CUSTOMER'
+        case 10009:
+            return 'SUSPENDED_ACCOUNT'
+        case 10010:
+            return 'INVALID_ACCOUNT'
+        case 10011:
+            return 'GENERAL_DECLINE'
+        case 10012:
+            return 'BOLETO_DECLINED'
+        case 10013:
+            return 'SCORE_EXCEEDS_THRESHOLD'
+        case 10014:
+            return 'PAYMENT_REFUSED'
+        case 10015:
+            return 'PROCESSOR_ERROR'
+        case 10016:
+            return 'EXPIRED_CARD'
+        case 10017:
+            return 'INVALID_MERCHANT_CONFIGURATION'
+        case 10018:
+            return 'CONSUMER_AUTHENTICATION_REQUIRED'
+        case 10019:
+            return 'DECISION_PROFILE_REVIEW'
+        case 10020:
+            return 'DECISION_PROFILE_REJECT'
+        case 10021:
+            return 'CUSTOMER_WATCHLIST_MATCH'
+        case 10022:
+            return 'ADDRESS_COUNTRY_WATCHLIST_MATCH'
+        case 10023:
+            return 'EMAIL_COUNTRY_WATCHLIST_MATCH'
+        case 10024:
+            return 'IP_COUNTRY_WATCHLIST_MATCH'
+        case 10025:
+            return 'ACH_VERIFICATION_FAILED'
+        case 10026:
+            return 'ALLOWABLE_PIN_RETRIES_EXCEEDED'
+        case 10027:
+            return 'PENDING_AUTHENTICATION'
+        case 10028:
+            return 'INSUFFICIENT_FUND'
+        case 10029:
+            return 'CVN_NOT_MATCH'
+        case 10030:
+            return 'INVALID_CVN'
+        case 10031:
+            return 'CV_FAILED'
+        case 10032:
+            return 'EXCEEDS_CREDIT_LIMIT'
+        case 10033:
+            return 'DEBIT_CARD_USAGE_LIMIT_EXCEEDED'
+        case 10034:
+            return 'ISSUER_UNAVAILABLE'
+        case 10035:
+            return 'STOLEN_LOST_CARD'
+        case 20001:
+            return 'DUPLICATE_REQUEST'
+        case 20002:
+            return 'SYSTEM_ERROR'
+        case 20003:
+            return 'SERVER_TIMEOUT'
+        case 20004:
+            return 'SERVICE_TIMEOUT'
+        case 20005:
+            return 'MISSING_FIELD'
+        case 20006:
+            return 'INVALID_DATA'
+        case 20007:
+            return 'CARD_TYPE_NOT_ACCEPTED'
+        case 20008:
+            return 'INVALID_MERCHANT_CONFIGURATION'
+        case 20009:
+            return 'INVALID_AMOUNT'
+        case 20010:
+            return 'INVALID_CARD_TYPE'
+        case 20011:
+            return 'INVALID_PAYMENT_ID'
+        case 20012:
+            return 'INVALID_CARD'
+        case 20013:
+            return 'INVALID_OR_MISSING_CONFIG'
+        case 20014:
+            return 'NOT_SUPPORTED'
+        case 20015:
+            return 'PROCESSOR_UNAVAILABLE'
+        default:
+            return 'UNKNOWN'
+    }
+}
+
+const field = (amount) => {
+    if (amount <= 20000) {
+        return {errorInformation: {reason: reason(amount)}}
+    } else {
+        return {reason: reason(amount)}
+    }
+}
+
+app.post('/api/payment', (req, res) => {
+    return res.status(200).json(field(req.body.orderInformation.amountDetails.totalAmount))
+})
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
-
-const html = `
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello from Render!</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script>
-      setTimeout(() => {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          disableForReducedMotion: true
-        });
-      }, 500);
-    </script>
-    <style>
-      @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
-      @font-face {
-        font-family: "neo-sans";
-        src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
-        font-style: normal;
-        font-weight: 700;
-      }
-      html {
-        font-family: neo-sans;
-        font-weight: 700;
-        font-size: calc(62rem / 16);
-      }
-      body {
-        background: white;
-      }
-      section {
-        border-radius: 1em;
-        padding: 1em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
-  </head>
-  <body>
-    <section>
-      Hello from Render!
-    </section>
-  </body>
-</html>
-`
