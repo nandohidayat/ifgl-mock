@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 31;
+const port = process.env.PORT || 3001;
 
 app.use(express.json())
 const reason = (amount) => {
@@ -110,6 +110,114 @@ const reason = (amount) => {
     }
 }
 
+const reasonCode = (amount) => {
+    switch (amount) {
+        case 101:
+            return 250
+        case 102:
+            return 476
+        case 103:
+            return 200
+        case 104:
+            return 201
+        case 105:
+            return 203
+        case 106:
+            return 208
+        case 107:
+            return 220
+        case 108:
+            return 221
+        case 109:
+            return 222
+        case 110:
+            return 231
+        case 111:
+            return 233
+        case 112:
+            return 248
+        case 113:
+            return 400
+        case 114:
+            return 999
+        case 115:
+            return 999
+        case 116:
+            return 202
+        case 117:
+            return 234
+        case 118:
+            return 475
+        case 119:
+            return 480
+        case 120:
+            return 481
+        case 121:
+            return 700
+        case 122:
+            return 701
+        case 123:
+            return 702
+        case 124:
+            return 703
+        case 125:
+            return 999
+        case 126:
+            return 999
+        case 127:
+            return 999
+        case 128:
+            return 204
+        case 129:
+            return 209
+        case 130:
+            return 211
+        case 131:
+            return 230
+        case 132:
+            return 210
+        case 133:
+            return 251
+        case 134:
+            return 207
+        case 135:
+            return 205
+        case 201:
+            return 104
+        case 202:
+            return 105
+        case 203:
+            return 151
+        case 204:
+            return 999
+        case 205:
+            return 101
+        case 206:
+            return 102
+        case 207:
+            return 232
+        case 208:
+            return 234
+        case 209:
+            return 239
+        case 210:
+            return 240
+        case 211:
+            return 241
+        case 212:
+            return 999
+        case 213:
+            return 999
+        case 214:
+            return 999
+        case 215:
+            return 236
+        default:
+            return 999
+
+    }
+}
+
 const field = (amount) => {
     if (amount <= 200) {
         return {errorInformation: {reason: reason(amount)}}
@@ -119,10 +227,20 @@ const field = (amount) => {
 }
 
 app.post('/pts/v2/payments', (req, res) => {
-    return res.status(2).json(field(req.body.orderInformation.amountDetails.totalAmount))
+    return res.status(200).json(field(req.body.orderInformation.amountDetails.totalAmount))
+})
+
+app.post('/tss/v2/searches', (req, res) => {
+    const body = {count:2,_embedded:{transactionSummaries:[{id: 1}]}}
+    return res.status(201).json(body)
+})
+
+app.get('/tss/v2/transactions/:id', (req, res) => {
+    const body = {applicationInformation: {reasonCode: 233}}
+    return res.status(200).json(body)
 })
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
-server.keepAliveTimeout = 120 * 10;
-server.headersTimeout = 120 * 10;
+server.keepAliveTimeout = 12000 * 10;
+server.headersTimeout = 12000 * 10;
